@@ -3,10 +3,184 @@
 
 using namespace std;
 class Song {
+        string title;
+    string artist;
+    string album;
+    string duration;
+    Song* prev;
+    Song* next;
+
+    Song(string t, string a, string al, string d) {
+        title = t;
+        artist = a;
+        album = al;
+        duration = d;
+        prev = nullptr;
+        next = nullptr;
+    }
 
 };
 
 class Playlist {
+    private:
+    Song* head;
+    Song* tail;
+    Song* current;
+    int songCount;
+
+public:
+    // Constructor initializes empty playlist
+    Playlist() {
+        head = nullptr;
+        tail = nullptr;
+        current = nullptr;
+        songCount = 0;
+    }
+
+    // Add a new song to the end of the playlist
+    void addSong(Song* newSong) {
+
+        // If playlist is empty, new song becomes head, tail, and current
+        if (head == nullptr) {
+            head = newSong;
+            tail = newSong;
+            current = newSong;
+        } 
+        else {
+            // Connect new song to old tail
+            tail->next = newSong;
+            newSong->prev = tail;
+
+            // Move tail pointer to new song
+            tail = newSong;
+        }
+
+        songCount++;
+
+        cout << newSong->title << "' added to playlist." << endl;
+    }
+
+    // Remove song by title
+    void removeSong(string title) {
+        Song* temp = head;
+
+        while (temp != nullptr) {
+
+            // Found matching song
+            if (temp->title == title) {
+
+                // Case 1: Song is not the first song
+                if (temp->prev != nullptr) {
+                    temp->prev->next = temp->next;
+                } else {
+                    head = temp->next; // Removing head
+                }
+
+                // Case 2: Song is not the last song
+                if (temp->next != nullptr) {
+                    temp->next->prev = temp->prev;
+                } else {
+                    tail = temp->prev; // Removing tail
+                }
+
+                // If removed song was playing, move to next or previous
+                if (current == temp) {
+                    if (temp->next != nullptr) {
+                        current = temp->next;
+                    } else {
+                        current = temp->prev;
+                    }
+                }
+
+                delete temp;
+                songCount--;
+
+                cout << title << "' removed from playlist." << endl;
+                return;
+            }
+
+            temp = temp->next;
+        }
+
+        cout << "Song not found: " << title << endl;
+    }
+
+    // Move to next song
+    Song* playNext() {
+
+        if (current == nullptr) {
+            cout << "No song to play." << endl;
+            return nullptr;
+        }
+
+        if (current->next == nullptr) {
+            cout << "Already at the last song." << endl;
+            return current;
+        }
+
+        current = current->next;
+        return current;
+    }
+
+    // Move to previous song
+    Song* playPrevious() {
+
+        if (current == nullptr) {
+            cout << "No song to play." << endl;
+            return nullptr;
+        }
+
+        if (current->prev == nullptr) {
+            cout << "Already at the first song." << endl;
+            return current;
+        }
+
+        current = current->prev;
+        return current;
+    }
+
+    // Search for song by title
+    Song* searchSong(string title) {
+        Song* temp = head;
+
+        while (temp != nullptr) {
+            if (temp->title == title) {
+                return temp;
+            }
+            temp = temp->next;
+        }
+
+        return nullptr;
+    }
+
+    // Display playlist contents
+    void displayPlaylist() {
+
+        if (songCount == 0) {
+            cout << "Playlist is empty!" << endl;
+            return;
+        }
+
+        Song* temp = head;
+        int num = 1;
+
+        cout << "\n==== Playlist (" << songCount << " songs) ====\n";
+
+        while (temp != nullptr) {
+            cout << num << ". " << temp->title << " - " << temp->artist << " (" << temp->duration << ")";
+
+            if (temp == current) {
+                cout << "  <-- NOW PLAYING";
+            }
+
+            cout << endl;
+
+            temp = temp->next;
+            num++;
+        }
+
+        cout << "==============================\n";
+    }
 
 };
 
