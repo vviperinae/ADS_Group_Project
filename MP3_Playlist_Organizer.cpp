@@ -423,9 +423,69 @@ class MusicLibrary {
 
 };
 
-class PerformanceTest {
+→            root->cleanup(); //root and everything under it
+            delete root;
+            root = nullptr;
+            cout << "✓ Music Library cleaned up" << endl;
+        }
+    }
+
+    //getter for root node for external access
+    CategoryNode* getRoot() {
+        return root;
+    }
+};
+
+class MusicLibrary {
 
 };
+class PerformanceTest {
+public:
+    static void demonstrateArrayVsLinkedList() {
+        cout << "\n=== PERFORMANCE DEMONSTRATION ===" << endl;
+        
+        // Test array approach (simulated)
+        cout << "\n--- ARRAY APPROACH (Baseline) ---" << endl;
+        cout << "Playlist as Array: [Song1, Song2, Song3, Song4, Song5]" << endl;
+        cout << "Removing 'Song3' from middle:" << endl;
+        cout << "1. Find Song3 (O(n))" << endl;
+        cout << "2. Shift Song4 and Song5 left (O(n))" << endl;
+        cout << "Total: O(n) - gets slower with more songs" << endl;
+        
+        // Test linked list approach
+        cout << "\n--- LINKED LIST APPROACH (Optimized) ---" << endl;
+        Playlist testPlaylist;
+        
+        // Add songs
+        for (int i = 1; i <= 5; i++) {
+            Song* newSong = new Song("Song " + to_string(i), "Artist " + to_string(i), 
+                                   "Album " + to_string(i), "3:00");
+            testPlaylist.addSong(newSong);
+        }
+        
+        cout << "Initial playlist:" << endl;
+        testPlaylist.displayPlaylist();
+        
+        // Demonstrate O(1) removal after finding
+        cout << "\nRemoving 'Song 3' from middle..." << endl;
+        cout << "1. Find Song3 (O(n) search)" << endl;
+        cout << "2. Update 2 pointers (O(1) removal)" << endl;
+        testPlaylist.removeSong("Song 3");
+        testPlaylist.displayPlaylist();
+        
+        cout << "\n--- PERFORMANCE SUMMARY ---" << endl;
+        cout << "Operation        | Array | Linked List" << endl;
+        cout << "------------------------------------" << endl;
+        cout << "Add Song         | O(1)  | O(1)" << endl;
+        cout << "Remove Song      | O(n)  | O(n) search + O(1) removal" << endl;
+        cout << "Next/Previous    | O(1)  | O(1)" << endl;
+        cout << "Search in Playlist| O(n)  | O(n)" << endl;
+        cout << "\nKey Advantage: Linked list avoids expensive O(n) shifting!" << endl;
+    }
+};
+
+
+
 
 void displayMenu() {
 
