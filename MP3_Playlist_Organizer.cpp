@@ -487,10 +487,105 @@ public:
 
 
 
+// =============================================
+// User Interface
+// =============================================
 void displayMenu() {
-
+    cout << "\n=== MP3 PLAYLIST ORGANIZER ===" << endl;
+    cout << "1. Browse Music Library" << endl;
+    cout << "2. Search Song" << endl;
+    cout << "3. Play from Category" << endl;
+    cout << "4. Play Next Song" << endl;
+    cout << "5. Play Previous Song" << endl;
+    cout << "6. Show Current Song" << endl;
+    cout << "7. Add New Song" << endl;
+    cout << "8. Remove Song" << endl;
+    cout << "9. Show Current Playlist" << endl;
+    cout << "10. Performance Demo" << endl;
+    cout << "0. Exit" << endl;
+    cout << "Choose option: ";
 }
 
-int main() {
 
+// =============================================
+// Main Function
+// =============================================
+int main() {
+    cout << "🎵 MP3 Playlist Organizer - Optimized Version 🎵" << endl;
+    
+    MusicLibrary library;
+    int choice = -1;
+    
+    while (choice != 0) {
+        displayMenu();
+        cin >> choice;
+        
+        switch(choice) {
+            case 1:
+                library.displayLibrary();
+                break;
+            case 2: {
+                string title;
+                cout << "Enter song title: ";
+                cin.ignore();
+                getline(cin, title);
+                library.searchSong(title);
+                break;
+            }
+            case 3: {
+                string category;
+                cout << "Enter category path: ";
+                cin.ignore();
+                getline(cin, category);
+                library.setCurrentPlaylist(category);
+                break;
+            }
+            case 4:
+                library.playNext();
+                break;
+            case 5:
+                library.playPrevious();
+                break;
+            case 6:
+                library.displayCurrentSong();
+                break;
+            case 7: {
+                string title, artist, album, duration, category;
+                cout << "Enter song title: ";
+                cin.ignore();
+                getline(cin, title);
+                cout << "Enter artist: ";
+                getline(cin, artist);
+                cout << "Enter album: ";
+                getline(cin, album);
+                cout << "Enter duration: ";
+                getline(cin, duration);
+                cout << "Enter category path: ";
+                getline(cin, category);
+                library.addSong(title, artist, album, duration, category);
+                break;
+            }
+            case 8: {
+                string title;
+                cout << "Enter song title: ";
+                cin.ignore();
+                getline(cin, title);
+                library.removeSongFromCurrent(title);
+                break;
+            }
+            case 9:
+                library.displayCurrentPlaylist();
+                break;
+            case 10:
+                PerformanceTest::demonstrateArrayVsLinkedList();
+                break;
+            case 0:
+                cout << "Goodbye! 🎵" << endl;
+                break;
+            default:
+                cout << "Invalid choice!" << endl;
+        }
+    }
+    
+    return 0;
 }
