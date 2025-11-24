@@ -1,5 +1,7 @@
 # MP3 Playlist Organizer
 
+### Made by: Safa, Banaf, Sofea, Nessa, Sobena
+---
 A C++ music library management system that efficiently organizes songs using linked lists and tree data structures.
 
 ## Features
