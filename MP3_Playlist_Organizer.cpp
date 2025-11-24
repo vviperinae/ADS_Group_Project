@@ -2,8 +2,10 @@
 #include <string>
 
 using namespace std;
+
 class Song {
-        string title;
+public:  // added public access modifier so song data can be accessed
+    string title;
     string artist;
     string album;
     string duration;
@@ -18,18 +20,17 @@ class Song {
         prev = nullptr;
         next = nullptr;
     }
-
 };
 
 class Playlist {
-    private:
+private:
     Song* head;
     Song* tail;
     Song* current;
     int songCount;
 
 public:
-    // Constructor initializes empty playlist
+    // constructor initializes empty playlist
     Playlist() {
         head = nullptr;
         tail = nullptr;
@@ -37,53 +38,48 @@ public:
         songCount = 0;
     }
 
-    // Add a new song to the end of the playlist
+    // add a new song to the end of the playlist
     void addSong(Song* newSong) {
-
-        // If playlist is empty, new song becomes head, tail, and current
+        // if playlist is empty, new song becomes head, tail, and current
         if (head == nullptr) {
             head = newSong;
             tail = newSong;
             current = newSong;
         } 
         else {
-            // Connect new song to old tail
+            // connect new song to old tail
             tail->next = newSong;
             newSong->prev = tail;
-
-            // Move tail pointer to new song
+            // move tail pointer to new song
             tail = newSong;
         }
 
         songCount++;
-
-        cout << newSong->title << "' added to playlist." << endl;
+        cout << "'" << newSong->title << "' added to playlist." << endl;  // fixed quote placement
     }
 
-    // Remove song by title
+    // remove song by title
     void removeSong(string title) {
         Song* temp = head;
 
         while (temp != nullptr) {
-
-            // Found matching song
+            // found matching song
             if (temp->title == title) {
-
-                // Case 1: Song is not the first song
+                // case 1: song is not the first song
                 if (temp->prev != nullptr) {
                     temp->prev->next = temp->next;
                 } else {
-                    head = temp->next; // Removing head
+                    head = temp->next; // removing head
                 }
 
-                // Case 2: Song is not the last song
+                // case 2: song is not the last song
                 if (temp->next != nullptr) {
                     temp->next->prev = temp->prev;
                 } else {
-                    tail = temp->prev; // Removing tail
+                    tail = temp->prev; // removing tail
                 }
 
-                // If removed song was playing, move to next or previous
+                // if removed song was playing, move to next or previous
                 if (current == temp) {
                     if (temp->next != nullptr) {
                         current = temp->next;
@@ -95,7 +91,7 @@ public:
                 delete temp;
                 songCount--;
 
-                cout << title << "' removed from playlist." << endl;
+                cout << "'" << title << "' removed from playlist." << endl;  // fixed quote placement
                 return;
             }
 
@@ -105,9 +101,8 @@ public:
         cout << "Song not found: " << title << endl;
     }
 
-    // Move to next song
+    // move to next song
     Song* playNext() {
-
         if (current == nullptr) {
             cout << "No song to play." << endl;
             return nullptr;
@@ -122,9 +117,8 @@ public:
         return current;
     }
 
-    // Move to previous song
+    // move to previous song
     Song* playPrevious() {
-
         if (current == nullptr) {
             cout << "No song to play." << endl;
             return nullptr;
@@ -139,7 +133,7 @@ public:
         return current;
     }
 
-    // Search for song by title
+    // search for song by title
     Song* searchSong(string title) {
         Song* temp = head;
 
@@ -153,9 +147,8 @@ public:
         return nullptr;
     }
 
-    // Display playlist contents
+    // display playlist contents
     void displayPlaylist() {
-
         if (songCount == 0) {
             cout << "Playlist is empty!" << endl;
             return;
@@ -182,6 +175,15 @@ public:
         cout << "==============================\n";
     }
 
+    // get current song
+    Song* getCurrentSong() {
+        return current;
+    }
+
+    // get song count
+    int getSongCount() {
+        return songCount;
+    }
 };
 
 // =============================================
@@ -356,8 +358,7 @@ public:
 
 private: //recursive helper function to search for song in a node and its children
     Song* searchSongInNode(CategoryNode* node, string title) {
-
-        Song* found = node->playlist->searchSong(title); //firstt check current node's playlist
+        Song* found = node->playlist->searchSong(title); //first check current node's playlist
         if (found != nullptr) {
             cout << "✓ Found song in category: " << node->name << endl;
             return found;
@@ -386,7 +387,7 @@ public:
     // count all categories in the tree
     int countCategories(CategoryNode* node) {
         int count = 1; //count this node itself
-        //add counts fromm all children recursively
+        //add counts from all children recursively
         for (int i = 0; i < node->childCount; i++) {
             count += countCategories(node->children[i]);
         }
@@ -420,72 +421,213 @@ public:
 };
 
 class MusicLibrary {
+private:
+    MusicTree tree;
+    Playlist* currentPlaylist;
+    Song* currentSong;
 
-};
-
-→            root->cleanup(); //root and everything under it
-            delete root;
-            root = nullptr;
-            cout << "✓ Music Library cleaned up" << endl;
-        }
-    }
-
-    //getter for root node for external access
-    CategoryNode* getRoot() {
-        return root;
-    }
-};
-
-class MusicLibrary {
-
-};
-class PerformanceTest {
 public:
-    static void demonstrateArrayVsLinkedList() {
-        cout << "\n=== PERFORMANCE DEMONSTRATION ===" << endl;
-        
-        // Test array approach (simulated)
-        cout << "\n--- ARRAY APPROACH (Baseline) ---" << endl;
-        cout << "Playlist as Array: [Song1, Song2, Song3, Song4, Song5]" << endl;
-        cout << "Removing 'Song3' from middle:" << endl;
-        cout << "1. Find Song3 (O(n))" << endl;
-        cout << "2. Shift Song4 and Song5 left (O(n))" << endl;
-        cout << "Total: O(n) - gets slower with more songs" << endl;
-        
-        // Test linked list approach
-        cout << "\n--- LINKED LIST APPROACH (Optimized) ---" << endl;
-        Playlist testPlaylist;
-        
-        // Add songs
-        for (int i = 1; i <= 5; i++) {
-            Song* newSong = new Song("Song " + to_string(i), "Artist " + to_string(i), 
-                                   "Album " + to_string(i), "3:00");
-            testPlaylist.addSong(newSong);
+    MusicLibrary() {
+        currentPlaylist = nullptr;
+        currentSong = nullptr;
+    }
+
+    void displayLibrary() {
+        //display the entire music library structure
+        tree.displayLibrary();
+    }
+
+    void searchSong(string title) {
+        //search for a song by title in the entire library
+        Song* found = tree.searchSongInLibrary(title);
+        if (found != nullptr) {
+            cout << "Found: " << found->title << " - " << found->artist << " (" << found->duration << ")" << endl;
+        } else {
+            cout << "Song not found: " << title << endl;
         }
+    }
+
+    void setCurrentPlaylist(string categoryPath) {
+        //set the current playlist to a specific category
+        CategoryNode* category = tree.findCategory(categoryPath);
+        if (category != nullptr) {
+            currentPlaylist = category->playlist;
+            currentSong = currentPlaylist->getCurrentSong();
+            cout << "Now playing from category: " << categoryPath << endl;
+            currentPlaylist->displayPlaylist();
+        } else {
+            cout << "Category not found: " << categoryPath << endl;
+        }
+    }
+
+    void playNext() {
+        //play the next song in current playlist
+        if (currentPlaylist != nullptr) {
+            currentSong = currentPlaylist->playNext();
+            if (currentSong != nullptr) {
+                cout << "Now playing: " << currentSong->title << " - " << currentSong->artist << endl;
+            }
+        } else {
+            cout << "No playlist selected!" << endl;
+        }
+    }
+
+    void playPrevious() {
+        //play the previous song in current playlist
+        if (currentPlaylist != nullptr) {
+            currentSong = currentPlaylist->playPrevious();
+            if (currentSong != nullptr) {
+                cout << "Now playing: " << currentSong->title << " - " << currentSong->artist << endl;
+            }
+        } else {
+            cout << "No playlist selected!" << endl;
+        }
+    }
+
+    void displayCurrentSong() {
+        //display the currently playing song
+        if (currentSong != nullptr) {
+            cout << "Current song: " << currentSong->title << " - " << currentSong->artist 
+                 << " (" << currentSong->duration << ")" << endl;
+        } else {
+            cout << "No song is currently playing!" << endl;
+        }
+    }
+
+    void addSong(string title, string artist, string album, string duration, string categoryPath) {
+        //add a new song to a specific category
+        //first ensure the category exists
+        tree.addCategory(categoryPath);
         
-        cout << "Initial playlist:" << endl;
-        testPlaylist.displayPlaylist();
-        
-        // Demonstrate O(1) removal after finding
-        cout << "\nRemoving 'Song 3' from middle..." << endl;
-        cout << "1. Find Song3 (O(n) search)" << endl;
-        cout << "2. Update 2 pointers (O(1) removal)" << endl;
-        testPlaylist.removeSong("Song 3");
-        testPlaylist.displayPlaylist();
-        
-        cout << "\n--- PERFORMANCE SUMMARY ---" << endl;
-        cout << "Operation        | Array | Linked List" << endl;
-        cout << "------------------------------------" << endl;
-        cout << "Add Song         | O(1)  | O(1)" << endl;
-        cout << "Remove Song      | O(n)  | O(n) search + O(1) removal" << endl;
-        cout << "Next/Previous    | O(1)  | O(1)" << endl;
-        cout << "Search in Playlist| O(n)  | O(n)" << endl;
-        cout << "\nKey Advantage: Linked list avoids expensive O(n) shifting!" << endl;
+        //find the category
+        CategoryNode* category = tree.findCategory(categoryPath);
+        if (category != nullptr) {
+            Song* newSong = new Song(title, artist, album, duration);
+            category->playlist->addSong(newSong);
+            cout << "Song added successfully!" << endl;
+        } else {
+            cout << "Failed to add song to category: " << categoryPath << endl;
+        }
+    }
+
+    void removeSongFromCurrent(string title) {
+        //remove a song from the current playlist
+        if (currentPlaylist != nullptr) {
+            currentPlaylist->removeSong(title);
+            currentSong = currentPlaylist->getCurrentSong();
+        } else {
+            cout << "No playlist selected!" << endl;
+        }
+    }
+
+    void displayCurrentPlaylist() {
+        //display the current playlist
+        if (currentPlaylist != nullptr) {
+            currentPlaylist->displayPlaylist();
+        } else {
+            cout << "No playlist selected!" << endl;
+        }
     }
 };
 
-
-
+// regular function for performance demonstration
+void demonstratePerformance() {
+    cout << "\n=== DATA STRUCTURE PERFORMANCE DEMONSTRATION ===" << endl;
+    
+    // linked list vs array comparison for playlists
+    cout << "\n--- LINKED LIST VS ARRAY FOR PLAYLISTS ---" << endl;
+    
+    cout << "\nARRAY APPROACH (Baseline):" << endl;
+    cout << "Playlist as Array: [Song1, Song2, Song3, Song4, Song5]" << endl;
+    cout << "Removing 'Song3' from middle:" << endl;
+    cout << "1. Find Song3 (O(n) search)" << endl;
+    cout << "2. Shift Song4 and Song5 left (O(n) shifting)" << endl;
+    cout << "Total: O(n) - gets slower with more songs" << endl;
+    
+    cout << "\nLINKED LIST APPROACH (Optimized):" << endl;
+    Playlist testPlaylist;
+    
+    // add songs to demonstrate linked list
+    for (int i = 1; i <= 5; i++) {
+        Song* newSong = new Song("Song " + to_string(i), "Artist " + to_string(i), 
+                               "Album " + to_string(i), "3:00");
+        testPlaylist.addSong(newSong);
+    }
+    
+    cout << "Initial playlist:" << endl;
+    testPlaylist.displayPlaylist();
+    
+    cout << "\nRemoving 'Song 3' from middle..." << endl;
+    cout << "1. Find Song3 (O(n) search)" << endl;
+    cout << "2. Update 2 pointers (O(1) removal)" << endl;
+    testPlaylist.removeSong("Song 3");
+    testPlaylist.displayPlaylist();
+    
+    // tree data structure demonstration
+    cout << "\n--- TREE DATA STRUCTURE FOR CATEGORIES ---" << endl;
+    
+    cout << "\nFLAT STRUCTURE (Inefficient):" << endl;
+    cout << "All categories in one list:" << endl;
+    cout << "- Rock" << endl;
+    cout << "- Pop" << endl;
+    cout << "- Rock/Classic" << endl;
+    cout << "- Rock/Metal" << endl;
+    cout << "- Pop/2000s" << endl;
+    cout << "Search time: O(n) - linear search through all categories" << endl;
+    cout << "Organization: Poor - no hierarchy" << endl;
+    
+    cout << "\nTREE STRUCTURE (Efficient):" << endl;
+    cout << "Hierarchical organization:" << endl;
+    cout << "Music Library" << endl;
+    cout << "  ├── Rock" << endl;
+    cout << "  │   ├── Classic" << endl;
+    cout << "  │   └── Metal" << endl;
+    cout << "  └── Pop" << endl;
+    cout << "      └── 2000s" << endl;
+    
+    // demonstrate tree efficiency
+    MusicTree demoTree;
+    
+    cout << "\nBuilding category tree..." << endl;
+    demoTree.addCategory("Rock/Classic/Queen");
+    demoTree.addCategory("Rock/Metal/Metallica");
+    demoTree.addCategory("Pop/2000s/Britney Spears");
+    
+    cout << "\nTree structure benefits:" << endl;
+    cout << "- Search time: O(log n) with balanced tree" << endl;
+    cout << "- Natural hierarchy: matches real-world organization" << endl;
+    cout << "- Efficient navigation: follow parent-child relationships" << endl;
+    cout << "- Scalable: easy to add new subcategories" << endl;
+    
+    cout << "\nDemonstrating tree search..." << endl;
+    cout << "Finding 'Rock/Metal/Metallica':" << endl;
+    cout << "1. Start at root 'Music Library'" << endl;
+    cout << "2. Navigate to 'Rock' (O(1))" << endl;
+    cout << "3. Navigate to 'Metal' (O(1))" << endl;
+    cout << "4. Navigate to 'Metallica' (O(1))" << endl;
+    cout << "Total: O(h) where h is tree height" << endl;
+    
+    cout << "\n--- PERFORMANCE SUMMARY ---" << endl;
+    cout << "Data Structure  | Operation         | Time Complexity" << endl;
+    cout << "----------------------------------------------------" << endl;
+    cout << "Linked List     | Add Song          | O(1)" << endl;
+    cout << "Linked List     | Remove Song       | O(n) search + O(1) removal" << endl;
+    cout << "Linked List     | Next/Previous     | O(1)" << endl;
+    cout << "Array           | Remove Song       | O(n) search + O(n) shifting" << endl;
+    cout << "Tree            | Find Category     | O(h) where h is tree height" << endl;
+    cout << "Tree            | Add Category      | O(h) traversal + O(1) insertion" << endl;
+    cout << "Flat List       | Find Category     | O(n) linear search" << endl;
+    
+    cout << "\nKEY ADVANTAGES:" << endl;
+    cout << "✓ Linked lists avoid expensive O(n) shifting during removal" << endl;
+    cout << "✓ Trees provide efficient O(h) search in hierarchical data" << endl;
+    cout << "✓ Trees naturally represent real-world category relationships" << endl;
+    cout << "✓ Both structures excel in their specific use cases" << endl;
+    
+    
+    // cleanup
+    demoTree.cleanup();
+}
 
 // =============================================
 // User Interface
@@ -506,7 +648,6 @@ void displayMenu() {
     cout << "Choose option: ";
 }
 
-
 // =============================================
 // Main Function
 // =============================================
@@ -522,9 +663,11 @@ int main() {
         
         switch(choice) {
             case 1:
+                //browse the entire music library
                 library.displayLibrary();
                 break;
             case 2: {
+                //search for a song by title
                 string title;
                 cout << "Enter song title: ";
                 cin.ignore();
@@ -533,6 +676,7 @@ int main() {
                 break;
             }
             case 3: {
+                //set current playlist from a category
                 string category;
                 cout << "Enter category path: ";
                 cin.ignore();
@@ -541,15 +685,19 @@ int main() {
                 break;
             }
             case 4:
+                //play next song in current playlist
                 library.playNext();
                 break;
             case 5:
+                //play previous song in current playlist
                 library.playPrevious();
                 break;
             case 6:
+                //display current playing song
                 library.displayCurrentSong();
                 break;
             case 7: {
+                //add a new song to a category
                 string title, artist, album, duration, category;
                 cout << "Enter song title: ";
                 cin.ignore();
@@ -566,6 +714,7 @@ int main() {
                 break;
             }
             case 8: {
+                //remove song from current playlist
                 string title;
                 cout << "Enter song title: ";
                 cin.ignore();
@@ -574,12 +723,15 @@ int main() {
                 break;
             }
             case 9:
+                //display current playlist
                 library.displayCurrentPlaylist();
                 break;
             case 10:
-                PerformanceTest::demonstrateArrayVsLinkedList();
+                //run performance demonstration
+                demonstratePerformance();
                 break;
             case 0:
+                //exit the program
                 cout << "Goodbye! 🎵" << endl;
                 break;
             default:
