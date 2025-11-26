@@ -26,9 +26,9 @@ management, even with large music libraries.
 using namespace std;
 
 
-// =============================================
+// =================================================================
 // Doubly Linked List for playlist navigation(search, next song, etc)
-// =============================================
+// ==================================================================
 
 class Song {
 public:  // added public access modifier so song data can be accessed
