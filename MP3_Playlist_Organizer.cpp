@@ -1,10 +1,20 @@
 /*
+TFB2023/TEB1113:Algorithm and Data Structure 
+
+Title of Project: MP3 Playlist Organizer - Efficient Music Management System
+
 Authors/ID/Course
 Safa Sarfraz 24001006 COE
 Aisyah Sofea Binti Mohd Sallehuddin	22011342 COE
 Dania Anessa binti Mohd Aswawi 	22011086 COE
 Sobena A/P Ramachanthirarao 	22010905 COE
 Puteri Banafsha Binti Azmi 	 22010863 COE
+
+Description of the Project: 
+
+A music player application that uses linked lists for instant playlist navigation and tree structures 
+for organized music categorization. This design ensures fast song skipping and efficient playlist 
+management, even with large music libraries.
 
 */
 
@@ -14,6 +24,11 @@ Puteri Banafsha Binti Azmi 	 22010863 COE
 #include <string>
 
 using namespace std;
+
+
+// =============================================
+// Doubly Linked List for playlist navigation(search, next song, etc)
+// =============================================
 
 class Song {
 public:  // added public access modifier so song data can be accessed
@@ -238,7 +253,7 @@ public:
         //add the new child to the end of the array
         children[childCount] = child;
         childCount++;
-        cout << "✓ Added child category: " << child->name << " to " << name << endl;
+        cout << "Added child category: " << child->name << " to " << name << endl;
     }
 
     CategoryNode* findChild(string childName) { //find a child category by name
@@ -304,7 +319,7 @@ private:
 public:
     MusicTree() {
         root = new CategoryNode("Music Library");
-        cout << "✓ Created Music Library" << endl;
+        cout << "Created Music Library" << endl;
     }
 
     //add category path like "Rock/Queen/Greatest Hits"
@@ -337,7 +352,7 @@ public:
                 currentPart += path[i];
             }
         }
-        cout << "✓ Finished creating category: " << path << endl;
+        cout << "Finished creating category: " << path << endl;
     }
 
     //find category by path like "Rock/Queen"
@@ -350,7 +365,7 @@ public:
                 if (!currentPart.empty()) {
                     current = current->findChild(currentPart);
                     if (current == nullptr) {
-                        cout << "✗ Category not found: " << currentPart << " in path " << path << endl;
+                        cout << "Category not found: " << currentPart << " in path " << path << endl;
                         return nullptr;
                     }
                     currentPart = "";
@@ -422,7 +437,7 @@ public:
             root->cleanup(); //root and everything under it
             delete root;
             root = nullptr;
-            cout << "✓ Music Library cleaned up" << endl;
+            cout << "Music Library cleaned up" << endl;
         }
     }
 
@@ -631,10 +646,10 @@ void demonstratePerformance() {
     cout << "Flat List       | Find Category     | O(n) linear search" << endl;
     
     cout << "\nKEY ADVANTAGES:" << endl;
-    cout << "✓ Linked lists avoid expensive O(n) shifting during removal" << endl;
-    cout << "✓ Trees provide efficient O(h) search in hierarchical data" << endl;
-    cout << "✓ Trees naturally represent real-world category relationships" << endl;
-    cout << "✓ Both structures excel in their specific use cases" << endl;
+    cout << "Linked lists avoid expensive O(n) shifting during removal" << endl;
+    cout << "Trees provide efficient O(h) search in hierarchical data" << endl;
+    cout << "Trees naturally represent real-world category relationships" << endl;
+    cout << "Both structures excel in their specific use cases" << endl;
     
     
     // cleanup
@@ -664,7 +679,7 @@ void displayMenu() {
 // Main Function
 // =============================================
 int main() {
-    cout << "🎵 MP3 Playlist Organizer - Optimized Version 🎵" << endl;
+    cout << "MP3 Playlist Organizer - Optimized Version" << endl;
     
     MusicLibrary library;
     int choice = -1;
@@ -744,7 +759,7 @@ int main() {
                 break;
             case 0:
                 //exit the program
-                cout << "Goodbye! 🎵" << endl;
+                cout << "Goodbye!" << endl;
                 break;
             default:
                 cout << "Invalid choice!" << endl;
