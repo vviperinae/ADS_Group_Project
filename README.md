@@ -38,7 +38,18 @@ A C++ music library management system that efficiently organizes songs using lin
 - Pop/2000s/Britney Spears  
 - Jazz/Modern/Norah Jones
 
-## Compilation
+## Download and Setup
+1. Go to the GitHub repository page
+2. Click the green "Code" button
+3. Select "Download ZIP"
+4. Extract the ZIP file to your preferred location
+5. Open terminal/command prompt in the extracted folder
+### Compilation
 ```bash
 g++ -o music_library main.cpp
+
+# On Windows:
+music_library.exe
+
+# On Linux/macOS:
 ./music_library
